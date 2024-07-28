@@ -1,2 +1,2 @@
 import Storage from "./Storage";
-.class App {}
+class App {}
