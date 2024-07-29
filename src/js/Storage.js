@@ -35,12 +35,16 @@ const category = [
 ];
 
 export default class Storage {
-  static getAllCategories() {
+  static getAllCategories(sort = "newest") {
     const savedCategories = JSON.parse(localStorage.getItem("category")) || [];
 
-    return savedCategories.sort((a, b) =>
-      new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1
-    );
+    return savedCategories.sort((a, b) => {
+      if (sort === "newest") {
+        return new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1;
+      } else if (sort === "oldest") {
+        return new Date(a.createdAt) > new Date(b.createdAt) ? 1 : -1;
+      }
+    });
   }
   static saveCategory(categoryToSave) {
     const savedCategories = Storage.getAllCategories();
