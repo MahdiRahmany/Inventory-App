@@ -3,11 +3,20 @@ import Storage from "./Storage.js";
 const categoryTitle = document.querySelector("#category-title");
 const categoryDescription = document.querySelector("#category-description");
 const addNewCategoryBtn = document.querySelector("#add-new-category");
+const toggleAddNewCategoryBtn = document.getElementById("toggle-add-category");
+const categoryWrapper = document.getElementById("category-wrapper");
+const cancelAddCategory = document.getElementById("cancel-add-category");
 
 class CategoryView {
   constructor() {
     addNewCategoryBtn.addEventListener("click", (e) =>
       this.addNewCategoryBtn(e)
+    );
+    toggleAddNewCategoryBtn.addEventListener("click", (e) =>
+      this.toggleAddNewCategory(e)
+    );
+    cancelAddCategory.addEventListener("click", (e) =>
+      this.cancelAddCategory(e)
     );
     this.categories = [];
   }
@@ -21,6 +30,8 @@ class CategoryView {
     this.createCategoriesList();
     categoryTitle.value = "";
     categoryDescription.value = "";
+    categoryWrapper.classList.add("hidden");
+    toggleAddNewCategoryBtn.classList.remove("hidden");
   }
   setApp() {
     this.categories = Storage.getAllCategories();
@@ -33,6 +44,16 @@ class CategoryView {
     });
     const categoryDOM = document.getElementById("product-category");
     categoryDOM.innerHTML = result;
+  }
+  toggleAddNewCategory(e) {
+    e.preventDefault();
+    categoryWrapper.classList.remove("hidden");
+    toggleAddNewCategoryBtn.classList.add("hidden");
+  }
+  cancelAddCategory(e) {
+    e.preventDefault();
+    categoryWrapper.classList.add("hidden");
+    toggleAddNewCategoryBtn.classList.remove("hidden");
   }
 }
 
