@@ -1,2 +1,2 @@
-import Storage from "./Storage";
+import Storage from "./Storage.js";
 class App {}
