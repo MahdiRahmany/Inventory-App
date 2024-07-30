@@ -35,16 +35,12 @@ const category = [
 ];
 
 export default class Storage {
-  static getAllCategories(sort = "newest") {
+  static getAllCategories() {
     const savedCategories = JSON.parse(localStorage.getItem("category")) || [];
-
-    return savedCategories.sort((a, b) => {
-      if (sort === "newest") {
-        return new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1;
-      } else if (sort === "oldest") {
-        return new Date(a.createdAt) > new Date(b.createdAt) ? 1 : -1;
-      }
+    const sortedCategories = savedCategories.sort((a, b) => {
+      return new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1;
     });
+    return sortedCategories;
   }
   static saveCategory(categoryToSave) {
     const savedCategories = Storage.getAllCategories();
@@ -59,12 +55,16 @@ export default class Storage {
     }
     localStorage.setItem("category", JSON.stringify(savedCategories));
   }
-  static getAllProducts() {
+  static getAllProducts(sort = "newest") {
     const savedProducts = JSON.parse(localStorage.getItem("product")) || [];
-
-    return savedProducts.sort((a, b) =>
-      new Date(a.createdAt) > new Date(b.createdAt) ? 1 : -1
-    );
+    // newest : default
+    return savedProducts.sort((a, b) => {
+      if (sort === "newest") {
+        return new Date(a.createdAt) > new Date(b.createdAt) ? -1 : 1;
+      } else if (sort === "oldest") {
+        return new Date(a.createdAt) > new Date(b.createdAt) ? 1 : -1;
+      }
+    });
   }
   static saveProduct(productToSave) {
     const savedProducts = Storage.getAllProducts();
@@ -79,5 +79,10 @@ export default class Storage {
       savedProducts.push(productToSave);
     }
     localStorage.setItem("product", JSON.stringify(savedProducts));
+  }
+  static deleteProduct(id) {
+    const savedProducts = Storage.getAllProducts();
+    const filteredProducts = savedProducts.filter((p) => p.id !== parseInt(id));
+    localStorage.setItem("product", JSON.stringify(filteredProducts));
   }
 }
